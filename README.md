@@ -25,7 +25,7 @@ output:
 
 ## Querying Using Sqlline console
 
-Long in to container and issue following command:
+Log into the container and issue following command:
 
 ```bash
 $ sqlline -u jdbc:drill:zk=localhost:5181 -n mapr
