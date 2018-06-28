@@ -3,7 +3,7 @@
 A Spring Boot service which connect to MapR cluster and demonstrate querying using
  apache Drill
  
-##Prerequisites
+## Prerequisites
 Follow the steps specified in my github project - (SpringBootMapR)[https://github.com/mgorav/SpringBootMapR]
 to setup user.json
 
