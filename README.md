@@ -12,7 +12,21 @@ A Spring Boot service which connect to MapR cluster and demonstrate querying usi
 
 3. ......
 
-**Note: What is Apache Drill?** Apache Drill is a low latency distributed ANSI SQL compliant query engine for large-volume datasets, including structured and semi-structured/nested data which is Inspired by Google’s Dremel.
+**Note: What is Apache Drill?** Apache Drill is a low latency distributed ANSI SQL compliant query engine for large-volume datasets, including structured and semi-structured/nested data which is Inspired by Google’s Dremel. At the heart of it, Drill is a distributed SQL query engine. The core daemon in Drill is called "Drillbit." This is a service that is installed on all the data nodes in the Hadoop cluster. It's not a requirement to install Drill on all the data nodes. You can do certainly a partial set of nodes, but installing on all the nodes gives Drill the ability to achieve data locality at the query execution time.
+Data locality is the ability to push down the processing to the node where the data lives, rather than trying to bring the data over the network at the query execution time.
+
+**Query EXECUTION**
+
+The SQL where it comes in from a client - this could be a JDBC client, ODBC, CLI, or a REST endpoint. The query comes in, and the query is accepted by a Drillbit. The Drillbit that accepts the request acts as a foreman or coordinator for that specific request. As a client application, you could directly submit to a Drillbit, or you could talk to your ZooKeeper quorum, which in turn would draw the request to a specific Drillbit.
+Once a Drillbit receives the request, it passes the query and then it determines what is the best way to execute this particular query, or what is the most optimal way to execute the query.
+
+**Query OPTIMIZAION**
+
+Drill allows a variety of rule-based as well as cost-based optimizations, in addition to being aware of the data locality during the query planning.
+Once the best query plan is determined, Drill splits the query plan into a number of pieces called fragments, query plan fragments. So the Drillbit, the coordinator Drillbit, talks to the ZooKeeper, determines what are the other Drillbits that are available in the cluster. Then it gets the location of the data. By combining that information, it determines what are other Drillbits that can handle this particular list of query plan fragments. Then it distributes the work to the other Drillbits in the cluster. Each Drillbit does its own processing of the query plan fragment. They return the results back to the original Drillbit, and the Drillbit returns the results to the client.
+
+
+
 
 **Advantages of using MapR DRILL**
 
