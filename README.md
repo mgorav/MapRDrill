@@ -94,3 +94,4 @@ Output:
 | -9BWZzz76TJs3BaaoS2Sgg  | Shawn  | 2010-07-09     | null     |
 +-------------------------+--------+----------------+----------+
 ```
+### todo - integrate with spring jdbc configurable from application.yml/properties
