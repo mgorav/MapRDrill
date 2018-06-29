@@ -13,7 +13,9 @@ A Spring Boot service which connect to MapR cluster and demonstrate querying usi
 3. ......
 
 **Note: What is Apache Drill?** Apache Drill is a low latency distributed ANSI SQL compliant query engine for large-volume datasets, including structured and semi-structured/nested data which is Inspired by Google’s Dremel.
+
 **Advantages of uding MapR DRILL**
+
 1. High Performance SQL Queries with Scale-Out Architecture
 
 2. Schemaless Query Execution for Data Exploration
