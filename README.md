@@ -12,7 +12,27 @@ A Spring Boot service which connect to MapR cluster and demonstrate querying usi
 
 3. ......
 
-**Note: What is Apache Drill?** Apache Drill is a low latency distributed query engine for large-volume datasets, including structured and semi-structured/nested data which is Inspired by Google’s Dremel.
+**Note: What is Apache Drill?** Apache Drill is a low latency distributed ANSI SQL compliant query engine for large-volume datasets, including structured and semi-structured/nested data which is Inspired by Google’s Dremel.
+**Advantages of uding MapR DRILL**
+1. High Performance SQL Queries with Scale-Out Architecture
+
+2. Schemaless Query Execution for Data Exploration
+
+3. In-Place Analytics across Historical and Operational Data
+
+4. Connectivity to Popular BI Tools through QDBC and JDBC interfaces
+
+5. ANSI SQL Compliance
+
+6. Integration with MapR-DB Secondary Indexes for Operational Analytics
+
+7. Integration with Hive for Interactive Queries on Existing Hive Tables
+
+8. Cluster Health and Resource Monitoring through MapR Control System
+
+9. Integration into MapR Data Science Refinery for Augmenting Data Science Workflows
+
+10. End-To-End Security for Data Accessed, Processed, and Analyzed
 
 Big Data (ML,AI) is the future. What I think is one of the most important aspect in it, is to define a repeatable programming model & exposing data APIs (hence adding business value) My github project aims to demonstrate some of these aspects by combining data power of MapR with opinionated framework Spring Boot. Data Scientists/Engineers tends to ignore these aspects, as they are more into solving data aspects and data related business value addition ... which indeed is there prime goal. Let’s bridge this gap.
 
