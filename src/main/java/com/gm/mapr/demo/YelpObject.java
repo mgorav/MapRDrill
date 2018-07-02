@@ -2,6 +2,7 @@ package com.gm.mapr.demo;
 
 
 public class YelpObject {
+    
     private String name;
     private String yelpingSince;
     private String support;

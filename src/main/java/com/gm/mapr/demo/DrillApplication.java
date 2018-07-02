@@ -85,7 +85,6 @@ public class DrillApplication {
                     " AND name = '" + name + "'";
 
             System.out.println("Query: " + sql);
-//
 
             List<YelpObject> yelpObjects = new ArrayList<>();
 
