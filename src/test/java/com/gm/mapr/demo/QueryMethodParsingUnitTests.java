@@ -4,16 +4,18 @@ import org.junit.Test;
 import org.springframework.core.SpringVersion;
 import org.springframework.data.projection.ProjectionFactory;
 import org.springframework.data.projection.SpelAwareProxyProjectionFactory;
-import org.springframework.data.repository.Repository;
 import org.springframework.data.repository.core.RepositoryMetadata;
 import org.springframework.data.repository.core.support.DefaultRepositoryMetadata;
 import org.springframework.data.repository.query.QueryMethod;
 import org.springframework.data.util.Version;
 
-import java.io.Serializable;
 import java.lang.reflect.Method;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.nullValue;
+import static org.junit.Assert.assertEquals;
 
 public class QueryMethodParsingUnitTests {
 
@@ -25,9 +27,10 @@ public class QueryMethodParsingUnitTests {
 
     @Test
     public void testCollectionQueryMetaData() throws Exception {
-        Method method = DrillRepositoryTesting.class.getMethod("getYelpBySinceAndName");
+        Method method = DrillRepositoryTesting.class.getMethod("getYelpBySinceAndName",String.class,String.class);
         QueryMethod queryMethod = new QueryMethod(method, metadata, factory);
         assertThat(queryMethod.isCollectionQuery()).isTrue();
+
     }
 
 
@@ -39,13 +42,26 @@ public class QueryMethodParsingUnitTests {
     }
 
 
-    public static interface SomeRepository extends Repository<Payment, Serializable> {
+    @Test
+    public void testQueryString() throws Exception {
 
-        Iterable<String> sampleMethod();
+        DrillQueryMethod method = getQueryMethod(DrillRepositoryTesting.class, "getYelpBySinceAndName",String.class,String.class);
+
+        assertEquals("YelpObject.getYelpBySinceAndName", method.getNamedQueryName());
+        assertThat(method.isCollectionQuery()).isTrue();
+        System.out.println(method.getAnnotatedQuery());
+        assertThat(!method.getAnnotatedQuery().isEmpty());
+        assertThat(method.getParameters().getNumberOfParameters() == 2);
     }
 
-    public static class Payment {
 
+
+    private DrillQueryMethod getQueryMethod(Class<?> repositoryInterface, String methodName, Class<?>... parameterTypes)
+            throws Exception {
+
+        Method method = repositoryInterface.getMethod(methodName, parameterTypes);
+        return new DrillQueryMethod(method, metadata, factory);
     }
+
 
 }

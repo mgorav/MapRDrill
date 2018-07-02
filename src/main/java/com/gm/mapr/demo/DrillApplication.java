@@ -3,20 +3,17 @@ package com.gm.mapr.demo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.support.rowset.ResultSetWrappingSqlRowSet;
-import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.sql.DataSource;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 @SpringBootApplication
@@ -29,6 +26,19 @@ public class DrillApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(DrillApplication.class, args);
+    }
+
+
+    @Bean
+    DrillDefaultMethodInvokingMethodInterceptor drillDefaultMethodInvokingMethodInterceptor() {
+
+        return new DrillDefaultMethodInvokingMethodInterceptor();
+    }
+
+    @Bean
+    public DrillRepository drillRepository(ApplicationContext applicationContext) throws ClassNotFoundException {
+        DrillRepositoryFactoryBean fb = new DrillRepositoryFactoryBean();
+        return fb.createDrillRepository(DrillRepository.class, applicationContext.getAutowireCapableBeanFactory());
     }
 
     @Bean
@@ -62,6 +72,9 @@ public class DrillApplication {
         @Autowired
         private JdbcTemplate jdbcTemplate;
 
+        @Autowired
+        private DrillRepository drillRepository;
+
         /**
          * Can specify connection URL in 2 ways.
          * 1. Connect to Zookeeper - "jdbc:drill:zk=<hostname/host-ip>:5181/drill/<cluster-name>-drillbits"
@@ -77,26 +90,28 @@ public class DrillApplication {
             //Ensure that the user provided is present in the cluster / sandbox
             //Connection connection = DriverManager.getConnection(DRILL_JDBC_URL, "root", "");
 
+            // JDBC way
             //Statement statement = connection.createStatement();
 
-            final String sql = "SELECT name, yelping_since, support " +
-                    " FROM dfs.`" + TABLE_NAME + "` " +
-                    " WHERE yelping_since = '" + since + "'" +
-                    " AND name = '" + name + "'";
+//            final String sql = "SELECT name, yelping_since, support " +
+//                    " FROM dfs.`" + TABLE_NAME + "` " +
+//                    " WHERE yelping_since = '" + since + "'" +
+//                    " AND name = '" + name + "'";
+//
+//            System.out.println("Query: " + sql);
 
-            System.out.println("Query: " + sql);
-
-            List<YelpObject> yelpObjects = new ArrayList<>();
-
-            SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
-            ResultSet result = ((ResultSetWrappingSqlRowSet) results).getResultSet();
-
-            while (result.next()) {
-
-                yelpObjects.add(new YelpObject(result.getString(1), result.getString(2), result.getString(3)));
-            }
-
-            return yelpObjects;
+//            List<YelpObject> yelpObjects = new ArrayList<>();
+//
+//            SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
+//            ResultSet result = ((ResultSetWrappingSqlRowSet) results).getResultSet();
+//
+//            while (result.next()) {
+//
+//                yelpObjects.add(new YelpObject(result.getString(1), result.getString(2), result.getString(3)));
+//            }
+//
+//            return yelpObjects;
+            return drillRepository.getYelpBySinceAndName(name, since);
 
         }
 

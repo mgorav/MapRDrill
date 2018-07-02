@@ -91,7 +91,7 @@
 
         <dependency>
             <groupId>org.springframework.data</groupId>
-            <artifactId>spring-data-jpa</artifactId>
+            <artifactId>spring-data-commons</artifactId>
         </dependency>
 
         <dependency>
