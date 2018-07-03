@@ -87,31 +87,6 @@ public class DrillApplication {
         public List<JsonNode> users(@PathVariable String name, @PathVariable String since) throws SQLException, ClassNotFoundException {
 
 
-            //Username and password have to be provided to obtain connection.
-            //Ensure that the user provided is present in the cluster / sandbox
-            //Connection connection = DriverManager.getConnection(DRILL_JDBC_URL, "root", "");
-
-            // JDBC way
-            //Statement statement = connection.createStatement();
-
-//            final String sql = "SELECT name, yelping_since, support " +
-//                    " FROM dfs.`" + TABLE_NAME + "` " +
-//                    " WHERE yelping_since = '" + since + "'" +
-//                    " AND name = '" + name + "'";
-//
-//            System.out.println("Query: " + sql);
-
-//            List<YelpObject> yelpObjects = new ArrayList<>();
-//
-//            SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
-//            ResultSet result = ((ResultSetWrappingSqlRowSet) results).getResultSet();
-//
-//            while (result.next()) {
-//
-//                yelpObjects.add(new YelpObject(result.getString(1), result.getString(2), result.getString(3)));
-//            }
-//
-//            return yelpObjects;
             return drillRepository.getYelpBySinceAndName(name, since);
 
         }
