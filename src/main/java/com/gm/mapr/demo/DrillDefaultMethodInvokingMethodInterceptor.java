@@ -34,6 +34,7 @@ public class DrillDefaultMethodInvokingMethodInterceptor extends DefaultMethodIn
 
         DrillQueryMethod method = getQueryMethod(DrillRepository.class, invocation.getMethod().getName(), invocation.getMethod().getParameterTypes());
 
+        // If @Query not specified, it's business as usual. Just call generic proxied repository (SimpleDrillRepository)
         if (method.getAnnotatedQuery().isEmpty()) {
             return super.invoke(invocation);
         }
