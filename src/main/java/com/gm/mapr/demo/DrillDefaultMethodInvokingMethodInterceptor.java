@@ -51,12 +51,24 @@ public class DrillDefaultMethodInvokingMethodInterceptor extends DefaultMethodIn
 
         ObjectMapper objectMapper = new ObjectMapper();
 
+        //  Generic payload creation
         while (result.next()) {
+
             ResultSetMetaData meta = result.getMetaData();
-            String node = "{\"" + meta.getColumnName(1) + "\": \"" + result.getString(1) + "\", "
-                    + "\"" + meta.getColumnName(2) + "\": \"" + result.getString(2) + "\", "
-                    + "\"" + meta.getColumnName(3) + "\": \"" + result.getString(3) + "\" }";
-            yelpObjects.add(objectMapper.readTree(node));
+
+            StringBuilder node = new StringBuilder();
+
+            node.append("{ ");
+            for (int i = 1; i <= meta.getColumnCount(); i++) {
+
+                node.append(" \"" + meta.getColumnName(i) + "\"" + " : " + "\"" + result.getString(i) + "\"");
+
+                if (i < meta.getColumnCount()) {
+                    node.append(",");
+                }
+            }
+            node.append("}");
+            yelpObjects.add(objectMapper.readTree(node.toString()));
 
         }
 
