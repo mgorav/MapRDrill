@@ -1,5 +1,7 @@
 package com.gm.mapr.demo;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.aopalliance.intercept.MethodInvocation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.projection.DefaultMethodInvokingMethodInterceptor;
@@ -27,7 +29,7 @@ public class DrillDefaultMethodInvokingMethodInterceptor extends DefaultMethodIn
     @Override
     public Object invoke(MethodInvocation invocation) throws Throwable {
 
-        List<YelpObject> yelpObjects = new ArrayList<>();
+        List<JsonNode> yelpObjects = new ArrayList<>();
 
         DrillQueryMethod method  = getQueryMethod(DrillRepository.class, invocation.getMethod().getName(),invocation.getMethod().getParameterTypes());
 
@@ -43,9 +45,15 @@ public class DrillDefaultMethodInvokingMethodInterceptor extends DefaultMethodIn
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
         ResultSet result = ((ResultSetWrappingSqlRowSet) results).getResultSet();
 
+        ObjectMapper objectMapper = new ObjectMapper();
         while (result.next()) {
+            // TODO get project meta in generic way and not hard coded
+            String node = "{\"Name\": \"" + result.getString(1) + "\", "
+                    + "\"yelping_since\": \"" + result.getString(2) + "\", "
+                    + "\"Support\": \"" + result.getString(3) + "\" }";
+            yelpObjects.add(objectMapper.readTree(node));
 
-            yelpObjects.add(new YelpObject(result.getString(1), result.getString(2), result.getString(3)));
+//            yelpObjects.add(new YelpObject(result.getString(1), result.getString(2), result.getString(3)));
         }
 
         return yelpObjects;

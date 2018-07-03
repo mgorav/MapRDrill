@@ -1,5 +1,6 @@
 package com.gm.mapr.demo;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -83,7 +84,7 @@ public class DrillApplication {
 
 
         @GetMapping("/users/{name}/{since}")
-        public List<YelpObject> users(@PathVariable String name, @PathVariable String since) throws SQLException, ClassNotFoundException {
+        public List<JsonNode> users(@PathVariable String name, @PathVariable String since) throws SQLException, ClassNotFoundException {
 
 
             //Username and password have to be provided to obtain connection.

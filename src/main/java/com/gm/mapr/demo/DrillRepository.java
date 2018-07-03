@@ -1,5 +1,6 @@
 package com.gm.mapr.demo;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import org.springframework.data.repository.Repository;
 import org.springframework.data.repository.query.Param;
 
@@ -13,7 +14,7 @@ public interface DrillRepository extends Repository<YelpObject,Serializable> {
     @Query("SELECT name, yelping_since, support" +  " FROM dfs.`" + TABLE_NAME + "` "
             + " WHERE yelping_since = '?datesince"  + "'" +
             " AND name = '?name"  + "'")
-    List<YelpObject> getYelpBySinceAndName(@Param("name") String name, @Param("datesince") String datesince);
+    List<JsonNode> getYelpBySinceAndName(@Param("name") String name, @Param("datesince") String datesince);
 
     YelpObject getById(String id);
 
