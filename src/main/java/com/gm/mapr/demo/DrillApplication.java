@@ -71,9 +71,6 @@ public class DrillApplication {
         public static final String TABLE_NAME = "/mapr/maprdemo.mapr.io/apps/user";
 
         @Autowired
-        private JdbcTemplate jdbcTemplate;
-
-        @Autowired
         private DrillRepository drillRepository;
 
         /**
