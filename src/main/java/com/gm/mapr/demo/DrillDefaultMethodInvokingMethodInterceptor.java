@@ -15,6 +15,7 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 
 import java.lang.reflect.Method;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,11 +47,13 @@ public class DrillDefaultMethodInvokingMethodInterceptor extends DefaultMethodIn
         ResultSet result = ((ResultSetWrappingSqlRowSet) results).getResultSet();
 
         ObjectMapper objectMapper = new ObjectMapper();
+        
         while (result.next()) {
             // TODO get project meta in generic way and not hard coded
-            String node = "{\"Name\": \"" + result.getString(1) + "\", "
-                    + "\"yelping_since\": \"" + result.getString(2) + "\", "
-                    + "\"Support\": \"" + result.getString(3) + "\" }";
+            ResultSetMetaData meta = result.getMetaData();
+            String node = "{\"" + meta.getColumnName(1) + "\": \"" + result.getString(1) + "\", "
+                    + "\"" + meta.getColumnName(2) + "\": \"" + result.getString(2) + "\", "
+                    + "\"" + meta.getColumnName(3) + "\": \"" + result.getString(3) + "\" }";
             yelpObjects.add(objectMapper.readTree(node));
 
 //            yelpObjects.add(new YelpObject(result.getString(1), result.getString(2), result.getString(3)));
