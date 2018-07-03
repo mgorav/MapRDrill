@@ -34,6 +34,9 @@ public class DrillDefaultMethodInvokingMethodInterceptor extends DefaultMethodIn
 
         DrillQueryMethod method = getQueryMethod(DrillRepository.class, invocation.getMethod().getName(), invocation.getMethod().getParameterTypes());
 
+        if (method.getAnnotatedQuery().isEmpty()) {
+            return super.invoke(invocation);
+        }
         String sql = method.getAnnotatedQuery();
 
         int cnt = 0;
@@ -55,12 +58,10 @@ public class DrillDefaultMethodInvokingMethodInterceptor extends DefaultMethodIn
                     + "\"" + meta.getColumnName(3) + "\": \"" + result.getString(3) + "\" }";
             yelpObjects.add(objectMapper.readTree(node));
 
-//            yelpObjects.add(new YelpObject(result.getString(1), result.getString(2), result.getString(3)));
         }
 
         return yelpObjects;
 
-//        return super.invoke(invocation);
     }
 
 
