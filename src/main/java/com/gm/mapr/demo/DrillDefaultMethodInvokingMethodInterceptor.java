@@ -60,8 +60,11 @@ public class DrillDefaultMethodInvokingMethodInterceptor extends DefaultMethodIn
 
             node.append("{ ");
             for (int i = 1; i <= meta.getColumnCount(); i++) {
+                String value = result.getString(i);
 
-                node.append(" \"" + meta.getColumnName(i) + "\"" + " : " + "\"" + result.getString(i) + "\"");
+                value = (value == null ? "\"" + ":" + null : "\"" + " : " + "\"" + value + "\"");
+
+                node.append(" \"" + meta.getColumnName(i) + value);
 
                 if (i < meta.getColumnCount()) {
                     node.append(",");
