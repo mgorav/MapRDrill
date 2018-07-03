@@ -32,24 +32,23 @@ public class DrillDefaultMethodInvokingMethodInterceptor extends DefaultMethodIn
 
         List<JsonNode> yelpObjects = new ArrayList<>();
 
-        DrillQueryMethod method  = getQueryMethod(DrillRepository.class, invocation.getMethod().getName(),invocation.getMethod().getParameterTypes());
+        DrillQueryMethod method = getQueryMethod(DrillRepository.class, invocation.getMethod().getName(), invocation.getMethod().getParameterTypes());
 
         String sql = method.getAnnotatedQuery();
 
         int cnt = 0;
         for (Object argument : invocation.getArguments()) {
-             String name = method.getParameters().getBindableParameter(cnt).getName().get();
-             sql = sql.replaceAll("\\?"+name, argument.toString());
-             cnt++;
+            String name = method.getParameters().getBindableParameter(cnt).getName().get();
+            sql = sql.replaceAll("\\?" + name, argument.toString());
+            cnt++;
         }
 
         SqlRowSet results = jdbcTemplate.queryForRowSet(sql);
         ResultSet result = ((ResultSetWrappingSqlRowSet) results).getResultSet();
 
         ObjectMapper objectMapper = new ObjectMapper();
-        
+
         while (result.next()) {
-            // TODO get project meta in generic way and not hard coded
             ResultSetMetaData meta = result.getMetaData();
             String node = "{\"" + meta.getColumnName(1) + "\": \"" + result.getString(1) + "\", "
                     + "\"" + meta.getColumnName(2) + "\": \"" + result.getString(2) + "\", "
