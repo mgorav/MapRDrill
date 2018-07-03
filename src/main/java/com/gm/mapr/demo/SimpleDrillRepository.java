@@ -1,6 +1,10 @@
 package com.gm.mapr.demo;
 
 
+/**
+ * Just a dummy repository to prove the concept.
+ * TODO: add generic methods here
+ */
 public class SimpleDrillRepository {
 
 
