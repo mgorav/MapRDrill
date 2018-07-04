@@ -1,0 +1,194 @@
+
+options {
+    LOOKAHEAD = 1;
+    FORCE_LA_CHECK = true;
+    CHOICE_AMBIGUITY_CHECK = 3;
+    OTHER_AMBIGUITY_CHECK = 2;
+    STATIC = false;
+    DEBUG_PARSER = false;
+    DEBUG_LOOKAHEAD = false;
+    DEBUG_TOKEN_MANAGER = false;
+    UNICODE_INPUT = true;
+    SUPPORT_CLASS_VISIBILITY_PUBLIC = false;
+}
+
+PARSER_BEGIN(BaseParser)
+
+package com.gm.drill.sql.parser;
+
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+
+final class BaseParser {
+
+    private ExpressionFactory factory;
+
+    public BaseParser(InputStream stream, String encoding, ExpressionFactory factory) {
+        this(stream, encoding);
+        this.factory = factory;
+    }
+}
+
+PARSER_END(BaseParser)
+
+
+SKIP : {
+    " " | "\t"
+}
+
+
+TOKEN : {
+    < #ALPHANUM : (["a"-"z", "A"-"Z", "0"-"9"])+ >
+}
+
+TOKEN : {
+    < #ATTR : (<ALPHANUM> ("(+)")?) >
+}
+
+TOKEN : {
+   < #OPERA      : ( "eq" | "eqic" | "neq" | "lt" | "lte" | "gt" | "gte" | "in" | "out" | "bet" | "like" | "likeic" | "isNull" | "isNotNull") >
+}
+
+TOKEN : {
+    < ATTROPER    : ( <ATTR> ( "." <ATTR> )* ("." <OPERA> ) ) >
+}
+
+
+
+
+TOKEN : {
+   < LPARA     : "(" >
+  | < RPARA     : ")" >
+}
+
+TOKEN : {   
+    < UNRESERVED_STR    : ( ~["\"", "'", "(", ")", ";", ",", "=", "<", ">", "!", "~", " ", "."] )+ > 
+  |	< SINGLE_QUOTED_STR : ( "'" ( ~["'"] )* "'" ) > {
+        matchedToken.image = image.substring(1, image.length() -1);
+    }
+  | < DOUBLE_QUOTED_STR : ( "\"" ( ~["\""] )* "\"" ) > {
+        matchedToken.image = image.substring(1, image.length() -1);
+    }
+}
+
+TOKEN : {
+    < AND        : ".and." >
+  | < OR         : ".or."  >
+}
+
+Expression Input():
+{
+    final Expression expression;
+}
+{
+    expression = Or() <EOF>
+    {
+        return expression;
+    }
+}
+
+Expression Or():
+{
+    final List<Expression> expressions = new ArrayList<Expression>(3);
+    Expression expression;
+}
+{
+    expression = And() { expressions.add(expression); }
+    (
+       <OR> expression = And() { expressions.add(expression); }
+    )*
+    {
+        return expressions.size() != 1 ? factory.createLogicalExpression(LogicalOperator.OR, expressions) : expressions.get(0);
+    }
+}
+
+Expression And():
+{
+    final List<Expression> expressions = new ArrayList<Expression>(3);
+    Expression expression;
+}
+{
+    expression = Constraint() { expressions.add(expression); }
+    (
+       <AND> expression = Constraint() { expressions.add(expression); }
+    )*
+    {
+        return expressions.size() != 1 ? factory.createLogicalExpression(LogicalOperator.AND, expressions) : expressions.get(0);
+    }
+}
+
+Expression Constraint():
+{
+    final Expression expression;
+}
+{
+    ( expression = Group() | expression = Comparison() )
+    {
+        return expression;
+    }
+}
+
+Expression Group():
+{
+    final Expression expression;
+}
+{
+    <LPARA> expression = Or() <RPARA>
+    {
+        return factory.createGroupExpression(expression);
+    }
+}
+
+ComparisonExpression Comparison():
+{
+    final String attrAndOper;
+    final List<String> args;
+}
+{
+    ( attrAndOper = AttrAndOper() args = Arguments() )
+    {
+        return factory.createComparisonExpression(attrAndOper, args);
+    }
+}
+
+String AttrAndOper(): {}
+{
+    token = <ATTROPER>
+    
+    {
+        return token.image;
+    }
+}
+
+List<String> Arguments():
+{
+    final List<String> value;
+}
+{
+    ( <LPARA> value = CommaSepArguments() <RPARA> ) { return value; }
+}
+
+List<String> CommaSepArguments():
+{
+    final List<String> list = new ArrayList<String>(30);
+    String arg;
+}
+{
+    arg = Argument() { list.add(arg); }
+	    (
+	        <",">
+	        arg = Argument() { list.add(arg); }
+	    )*
+	{
+        return list;
+    }
+}
+
+String Argument(): {}
+{
+    ( token = <UNRESERVED_STR> | token = <DOUBLE_QUOTED_STR> | token = <SINGLE_QUOTED_STR>)
+    {
+        return token.image;
+    }
+}

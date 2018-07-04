@@ -67,9 +67,6 @@ public class DrillApplication {
     @RestController
     public static class MapRDrillApi {
 
-
-        public static final String TABLE_NAME = "/mapr/maprdemo.mapr.io/apps/user";
-
         @Autowired
         private DrillRepository drillRepository;
 

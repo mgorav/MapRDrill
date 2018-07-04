@@ -8,15 +8,13 @@ import java.io.Serializable;
 import java.util.List;
 
 @org.springframework.stereotype.Repository
-public interface DrillRepository extends Repository<YelpObject,Serializable> {
-    public static final String TABLE_NAME = "/mapr/maprdemo.mapr.io/apps/user";
+public interface DrillRepository extends Repository<JsonNode, Serializable> {
+    public static final String TABLE_NAME =  "dfs.`" + "/mapr/maprdemo.mapr.io/apps/user";
 
-    @Query("SELECT name, yelping_since, support" +  " FROM dfs.`" + TABLE_NAME + "` "
-            + " WHERE yelping_since = '?datesince"  + "'" +
-            " AND name = '?name"  + "'")
+    @Query("SELECT name, yelping_since, support" + " FROM " + TABLE_NAME + "` "
+            + " WHERE yelping_since = '?datesince" + "'" +
+            " AND name = '?name" + "'")
     List<JsonNode> getYelpBySinceAndName(@Param("name") String name, @Param("datesince") String datesince);
-
-    YelpObject getById(String id);
 
 
 }
