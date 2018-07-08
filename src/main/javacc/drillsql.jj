@@ -39,7 +39,7 @@ SKIP : {
 
 
 TOKEN : {
-    < #ALPHANUM : (["a"-"z", "A"-"Z", "0"-"9"])+ >
+    < #ALPHANUM : (["a"-"z", "A"-"Z", "0"-"9","_"])+ >
 }
 
 TOKEN : {

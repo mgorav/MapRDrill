@@ -5,7 +5,7 @@ import org.springframework.util.StringUtils;
 
 public class QueryStringProcessor {
 
-    public void process(String queryString, String resourceName) {
+    public void process(String queryString, String resourceName,String fn) {
 
         // q=a.eq(2).and.a2.lt(4).and.a3.in('v1','v2','v3')
         // q=[a.eq(2).and(b.eq(3)].or.[d.eq('f')] for groups
@@ -18,7 +18,7 @@ public class QueryStringProcessor {
         // if the query string is empty then search all, no restrictions
         if (!StringUtils.isEmpty(queryString)) {
 
-            new DrillParser().parse(queryString).accept(new DrillSqlBuilderVisitor(), new QueryContext(resourceName));
+            new DrillParser().parse(queryString).accept(new DrillSqlBuilderVisitor(), new QueryContext(resourceName,fn));
         }
 
     }
@@ -29,7 +29,7 @@ public class QueryStringProcessor {
         // a.b.eq(1)
 
         DrillParser drillParser = new DrillParser();
-        QueryContext qc = new QueryContext("table1");
+        QueryContext qc = new QueryContext("table1",null);
         drillParser.parse(queryString).accept(new DrillSqlBuilderVisitor(),qc);
 
         System.out.println(qc.getQuery().toString());
