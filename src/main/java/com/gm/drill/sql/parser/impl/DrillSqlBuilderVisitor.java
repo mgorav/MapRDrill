@@ -7,7 +7,7 @@ import java.util.List;
 import static com.google.common.collect.Iterables.getLast;
 
 public class DrillSqlBuilderVisitor implements DrillVisitor<QueryContext, QueryContext> {
-    private ValueInterpreter vi = new ValueInterpreter();
+    private QueryValueInterpreter vi = new QueryValueInterpreter();
 
     @Override
     public QueryContext visit(AndExpression expression, QueryContext sql) {

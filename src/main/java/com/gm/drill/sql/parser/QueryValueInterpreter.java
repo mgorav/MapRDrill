@@ -7,7 +7,7 @@ import com.google.common.collect.Iterables;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ValueInterpreter {
+public class QueryValueInterpreter {
 
     public Object getValue(List<String> arguments, boolean nullAllowed) {
 
