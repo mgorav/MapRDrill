@@ -1,6 +1,5 @@
 package com.gm.drill.sql.parser;
 
-import com.gm.util.Check;
 import com.gm.util.Return2;
 import com.google.common.collect.Iterables;
 
@@ -48,37 +47,15 @@ public class QueryValueInterpreter {
 
     public Object valueOf(String value) {
 
-        Object valueObject = interpretString(value);
-//        if (Check.isNumeric(value)) {
-//            valueObject = interpretNumber(value);
-//        } else {
-//            // Date Type maybe
-//            try {
-//                valueObject = interpretDate(value);
-//            } catch (Exception e) {
-//                // Cannot parse to date
-//            }
-//        }
+        Object valueObject = interpretValue(value);
         return valueObject;
     }
 
-    private Object interpretNumber(String value) {
 
-        return value;
-        //return convertToNumeric(value, ohiContext.getLocale());
-    }
-
-    private Object interpretDate(String value) {
-
-        return value;
-
-        //return truncatedSqlDate(convertToDate(value, ohiContext.getLocale()));
-    }
-
-    private Object interpretString(String value) {
+    private Object interpretValue(String value) {
 
         // String value, add quotes if not there already
-        return value.contains("'") ? value : "'"+value+"'";
+        return value.contains("'") ? value : "'" + value + "'";
     }
 
 }
