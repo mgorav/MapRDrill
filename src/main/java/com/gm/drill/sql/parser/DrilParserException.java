@@ -6,7 +6,7 @@
 package com.gm.drill.sql.parser;
 
 /**
- * A top level exception of DrillParser that wraps all exceptions occurred in parsing.
+ * A top level exception of DrillQueryStringParser that wraps all exceptions occurred in parsing.
  */
 public class DrilParserException extends RuntimeException {
 

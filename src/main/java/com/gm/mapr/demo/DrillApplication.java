@@ -2,8 +2,8 @@ package com.gm.mapr.demo;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.gm.drill.sql.parser.DrillParser;
-import com.gm.drill.sql.parser.impl.DrillSqlBuilderVisitor;
+import com.gm.drill.sql.parser.DrillQueryStringParser;
+import com.gm.drill.sql.parser.impl.DrillSqlBuilderQueryStringVisitor;
 import com.gm.drill.sql.parser.impl.QueryContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -105,9 +104,9 @@ public class DrillApplication {
 
             List<JsonNode> yelpObjects = new ArrayList<>();
 
-            DrillParser drillParser = new DrillParser();
+            DrillQueryStringParser drillQueryStringParser = new DrillQueryStringParser();
             QueryContext qc = new QueryContext(TABLE_NAME,fn);
-            drillParser.parse(search).accept(new DrillSqlBuilderVisitor(), qc);
+            drillQueryStringParser.parse(search).accept(new DrillSqlBuilderQueryStringVisitor(), qc);
 
             String sql = qc.getQuery().toString();
             SqlRowSet results = jdbcTemplate.queryForRowSet(sql);

@@ -9,16 +9,16 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 
-public final class DrillParser {
+public final class DrillQueryStringParser {
 
     private static final Charset ENCODING = Charset.forName("UTF-8");
 
     private QueryExpressionFactory queryExpressionFactory;
 
     /**
-     * Creates a new instance of {@code DrillParser} with the default set of operators.
+     * Creates a new instance of {@code DrillQueryStringParser} with the default set of operators.
      */
-    public DrillParser() {
+    public DrillQueryStringParser() {
 
         this.queryExpressionFactory = new QueryExpressionFactory(Operator.values());
     }
@@ -52,7 +52,7 @@ public final class DrillParser {
 
     public static final void main(String args[]) {
 
-        DrillParser parser = new DrillParser();
+        DrillQueryStringParser parser = new DrillQueryStringParser();
         parser.parse("serviced.eq('abc').and.serviced.code.lte('234')");
         parser.parse("serviced.code.lte('234')");
         parser.parse("serviced.eq('abc')");

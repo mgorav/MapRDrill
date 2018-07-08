@@ -1,6 +1,6 @@
 package com.gm.drill.sql.parser.impl;
 
-import com.gm.drill.sql.parser.DrillParser;
+import com.gm.drill.sql.parser.DrillQueryStringParser;
 import org.springframework.util.StringUtils;
 
 public class QueryStringProcessor {
@@ -18,7 +18,7 @@ public class QueryStringProcessor {
         // if the query string is empty then search all, no restrictions
         if (!StringUtils.isEmpty(queryString)) {
 
-            new DrillParser().parse(queryString).accept(new DrillSqlBuilderVisitor(), new QueryContext(resourceName,fn));
+            new DrillQueryStringParser().parse(queryString).accept(new DrillSqlBuilderQueryStringVisitor(), new QueryContext(resourceName,fn));
         }
 
     }
@@ -28,9 +28,9 @@ public class QueryStringProcessor {
         // select a1,a2 from table1 t, table t2 where t1.id = t2.id
         // a.b.eq(1)
 
-        DrillParser drillParser = new DrillParser();
+        DrillQueryStringParser drillQueryStringParser = new DrillQueryStringParser();
         QueryContext qc = new QueryContext("table1",null);
-        drillParser.parse(queryString).accept(new DrillSqlBuilderVisitor(),qc);
+        drillQueryStringParser.parse(queryString).accept(new DrillSqlBuilderQueryStringVisitor(),qc);
 
         System.out.println(qc.getQuery().toString());
     }
