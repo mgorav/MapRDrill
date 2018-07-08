@@ -20,7 +20,7 @@ public final class DrillQueryStringParser {
      */
     public DrillQueryStringParser() {
 
-        this.queryExpressionFactory = new QueryExpressionFactory(Operator.values());
+        this.queryExpressionFactory = new QueryExpressionFactory(QueryOperator.values());
     }
 
     /**

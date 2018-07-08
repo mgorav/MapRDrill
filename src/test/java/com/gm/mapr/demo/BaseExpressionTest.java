@@ -2,7 +2,7 @@ package com.gm.mapr.demo;
 
 import com.gm.drill.sql.parser.ComparisonQueryExpression;
 import com.gm.drill.sql.parser.QueryExpression;
-import com.gm.drill.sql.parser.Operator;
+import com.gm.drill.sql.parser.QueryOperator;
 
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
@@ -12,7 +12,7 @@ import java.util.List;
 
 public class BaseExpressionTest {
 
-    protected void checkComparisonExpression(QueryExpression queryExpression, List<String> attributeList, Operator op, List<String> arguments) {
+    protected void checkComparisonExpression(QueryExpression queryExpression, List<String> attributeList, QueryOperator op, List<String> arguments) {
 
         assertThat("The queryExpression should be of type ComparisonQueryExpression", queryExpression instanceof ComparisonQueryExpression,
                 is(true));
@@ -22,7 +22,7 @@ public class BaseExpressionTest {
             assertThat("Attribute(s) check:", ce.getAttributes().get(ctr), is(attributeList.get(ctr)));
         }
 
-        assertThat("Operator check:", ce.getOperator(), is(op));
+        assertThat("QueryOperator check:", ce.getQueryOperator(), is(op));
         if (arguments == null) {
             assertThat("Arguments should be null", ce.getArguments(), nullValue());
         } else {

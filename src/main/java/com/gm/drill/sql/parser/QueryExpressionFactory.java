@@ -18,13 +18,13 @@ import static java.util.Arrays.asList;
  */
 public class QueryExpressionFactory {
 
-    private final Map<String, Operator> operators;
+    private final Map<String, QueryOperator> operators;
 
-    public QueryExpressionFactory(Operator[] operators) {
+    public QueryExpressionFactory(QueryOperator[] queryOperators) {
 
-        this.operators = new HashMap<>(operators.length);
-        for (Operator operator : operators) {
-            this.operators.put(operator.getSymbol(), operator);
+        this.operators = new HashMap<>(queryOperators.length);
+        for (QueryOperator queryOperator : queryOperators) {
+            this.operators.put(queryOperator.getSymbol(), queryOperator);
         }
     }
 
@@ -59,19 +59,19 @@ public class QueryExpressionFactory {
     /**
      * Creates a {@link ComparisonQueryExpression} instance with the given parameters.
      *
-     * @param attributeAndOperator Attribute and Operator
+     * @param attributeAndOperator Attribute and QueryOperator
      * @param arguments            A list of arguments that specifies the right side of the comparison.
-     * @throws UnknownOperatorException If no operator for the specified operator token exists.
+     * @throws UnknownQueryOperatorException If no operator for the specified operator token exists.
      */
     public ComparisonQueryExpression createComparisonExpression(
-            String attributeAndOperator, List<String> arguments) throws UnknownOperatorException {
+            String attributeAndOperator, List<String> arguments) throws UnknownQueryOperatorException {
 
         Return2<List<String>, String> tokens = splitAttributesAndOperator(attributeAndOperator);
-        Operator op = operators.get(tokens._2);
+        QueryOperator op = operators.get(tokens._2);
         if (op != null) {
             return new ComparisonQueryExpression(op, tokens._1, arguments);
         }
-        throw new UnknownOperatorException(tokens._2);
+        throw new UnknownQueryOperatorException(tokens._2);
 
     }
 

@@ -23,7 +23,7 @@ public class QueryValueInterpreter {
 
         if (values.size() != 2) {
             throw new RuntimeException("ERROR_CODE" +
-                    String.format("Search Operator between accepts 2 arguments. The current arguments are %s", values));
+                    String.format("Search QueryOperator between accepts 2 arguments. The current arguments are %s", values));
         }
         return new Return2<>(valueOf(values.get(0)), valueOf(values.get(1)));
     }
