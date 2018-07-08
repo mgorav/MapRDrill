@@ -25,6 +25,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.gm.mapr.demo.DrillDefaultMethodInvokingMethodInterceptor.getJsonNode;
 import static com.gm.mapr.demo.DrillRepository.TABLE_NAME;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
@@ -115,28 +116,7 @@ public class DrillApplication {
             ObjectMapper objectMapper = new ObjectMapper();
 
             //  Generic payload creation
-            while (result.next()) {
-
-                ResultSetMetaData meta = result.getMetaData();
-
-                StringBuilder node = new StringBuilder();
-
-                node.append("{ ");
-                for (int i = 1; i <= meta.getColumnCount(); i++) {
-                    String value = result.getString(i);
-
-                    value = (value == null ? "\"" + ":" + null : "\"" + " : " + "\"" + value + "\"");
-
-                    node.append(" \"" + meta.getColumnName(i) + value);
-
-                    if (i < meta.getColumnCount()) {
-                        node.append(",");
-                    }
-                }
-                node.append("}");
-                yelpObjects.add(objectMapper.readTree(node.toString()));
-
-            }
+            getJsonNode(yelpObjects, result, objectMapper);
 
             return yelpObjects;
 

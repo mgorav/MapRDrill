@@ -13,9 +13,11 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.ResultSetWrappingSqlRowSet;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,6 +55,13 @@ public class DrillDefaultMethodInvokingMethodInterceptor extends DefaultMethodIn
         ObjectMapper objectMapper = new ObjectMapper();
 
         //  Generic payload creation
+        getJsonNode(yelpObjects, result, objectMapper);
+
+        return yelpObjects;
+
+    }
+
+    static void getJsonNode(List<JsonNode> yelpObjects, ResultSet result, ObjectMapper objectMapper) throws SQLException, IOException {
         while (result.next()) {
 
             ResultSetMetaData meta = result.getMetaData();
@@ -75,9 +84,6 @@ public class DrillDefaultMethodInvokingMethodInterceptor extends DefaultMethodIn
             yelpObjects.add(objectMapper.readTree(node.toString()));
 
         }
-
-        return yelpObjects;
-
     }
 
 
