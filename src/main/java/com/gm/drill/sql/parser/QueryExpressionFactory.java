@@ -23,8 +23,8 @@ public class QueryExpressionFactory {
     public QueryExpressionFactory(Operator[] operators) {
 
         this.operators = new HashMap<>(operators.length);
-        for (Operator op : operators) {
-            this.operators.put(op.getSymbol(), op);
+        for (Operator operator : operators) {
+            this.operators.put(operator.getSymbol(), operator);
         }
     }
 
