@@ -5,7 +5,7 @@ import org.springframework.util.StringUtils;
 
 public class QueryStringProcessor {
 
-    public void process(StringBuilder sb, String queryString) {
+    public void process(String queryString, String resourceName) {
 
         // q=a.eq(2).and.a2.lt(4).and.a3.in('v1','v2','v3')
         // q=[a.eq(2).and(b.eq(3)].or.[d.eq('f')] for groups
@@ -17,20 +17,22 @@ public class QueryStringProcessor {
          */
         // if the query string is empty then search all, no restrictions
         if (!StringUtils.isEmpty(queryString)) {
-            new DrillParser().parse(queryString).accept(new DrillSqlBuilderVisitor(), sb);
+
+            new DrillParser().parse(queryString).accept(new DrillSqlBuilderVisitor(), new QueryContext(resourceName));
         }
 
     }
 
     public static void main(String[] args) {
-        String queryString = "a.eq(1)";
+        String queryString = "a.eq(1).and.b.gt(2).or.c.lt(3)";
+        // select a1,a2 from table1 t, table t2 where t1.id = t2.id
+        // a.b.eq(1)
 
         DrillParser drillParser = new DrillParser();
-        StringBuilder generatedDrillSql = new StringBuilder();
+        QueryContext qc = new QueryContext("table1");
+        drillParser.parse(queryString).accept(new DrillSqlBuilderVisitor(),qc);
 
-        drillParser.parse(queryString).accept(new DrillSqlBuilderVisitor(),generatedDrillSql);
-
-        System.out.println(generatedDrillSql.toString());
+        System.out.println(qc.getQuery().toString());
     }
 
 }

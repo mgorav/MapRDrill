@@ -49,16 +49,16 @@ public class ValueInterpreter {
     public Object valueOf(String value) {
 
         Object valueObject = interpretString(value);
-        if (Check.isNumeric(value)) {
-            valueObject = interpretNumber(value);
-        } else {
-            // Date Type maybe
-            try {
-                valueObject = interpretDate(value);
-            } catch (Exception e) {
-                // Cannot parse to date
-            }
-        }
+//        if (Check.isNumeric(value)) {
+//            valueObject = interpretNumber(value);
+//        } else {
+//            // Date Type maybe
+//            try {
+//                valueObject = interpretDate(value);
+//            } catch (Exception e) {
+//                // Cannot parse to date
+//            }
+//        }
         return valueObject;
     }
 
@@ -77,8 +77,8 @@ public class ValueInterpreter {
 
     private Object interpretString(String value) {
 
-        // String value, remove quotes and let it be string
-        return value.replace("\'", "");
+        // String value, add quotes if not there already
+        return value.contains("'") ? value : "'"+value+"'";
     }
 
 }
