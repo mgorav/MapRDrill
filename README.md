@@ -58,9 +58,18 @@ Big Data (ML,AI) is the future. What I think is one of the most important aspect
 Follow the steps specified in my github project - [SpringBootMapR](https://github.com/mgorav/SpringBootMapR)
 to setup user.json
 
+NOTE: Generate the query string grammar token by issuing following:
+```bash
+  mvn javacc:javacc
+```
+
 ## Play time
 
 Hit the URL - http://localhost:7777/users/Shawn/2010-07-09
+
+or
+
+http://localhost:7777/users?search=name.eq(Shawn).and.yelping_since.eq(2010-07-09)&fn=name, yelping_since, support
 
 output:
 
@@ -94,4 +103,4 @@ Output:
 | -9BWZzz76TJs3BaaoS2Sgg  | Shawn  | 2010-07-09     | null     |
 +-------------------------+--------+----------------+----------+
 ```
-### todo - integrate with spring jdbc configurable from application.yml/properties
+### todo - create auto configurer project + provide mutation support
