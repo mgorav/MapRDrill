@@ -1,7 +1,7 @@
 package com.gm.mapr.demo;
 
-import com.gm.drill.sql.parser.ComparisonExpression;
-import com.gm.drill.sql.parser.Expression;
+import com.gm.drill.sql.parser.ComparisonQueryExpression;
+import com.gm.drill.sql.parser.QueryExpression;
 import com.gm.drill.sql.parser.Operator;
 
 import static org.hamcrest.Matchers.is;
@@ -12,11 +12,11 @@ import java.util.List;
 
 public class BaseExpressionTest {
 
-    protected void checkComparisonExpression(Expression expression, List<String> attributeList, Operator op, List<String> arguments) {
+    protected void checkComparisonExpression(QueryExpression queryExpression, List<String> attributeList, Operator op, List<String> arguments) {
 
-        assertThat("The expression should be of type ComparisonExpression", expression instanceof ComparisonExpression,
+        assertThat("The queryExpression should be of type ComparisonQueryExpression", queryExpression instanceof ComparisonQueryExpression,
                 is(true));
-        ComparisonExpression ce = (ComparisonExpression) expression;
+        ComparisonQueryExpression ce = (ComparisonQueryExpression) queryExpression;
         assertThat("Attribute(s) size check:", ce.getAttributes().size(), is(attributeList.size()));
         for (int ctr = 0; ctr < attributeList.size(); ++ctr) {
             assertThat("Attribute(s) check:", ce.getAttributes().get(ctr), is(attributeList.get(ctr)));

@@ -79,64 +79,64 @@ TOKEN : {
 
 Expression Input():
 {
-    final Expression expression;
+    final Expression queryExpression;
 }
 {
-    expression = Or() <EOF>
+    queryExpression = Or() <EOF>
     {
-        return expression;
+        return queryExpression;
     }
 }
 
 Expression Or():
 {
-    final List<Expression> expressions = new ArrayList<Expression>(3);
-    Expression expression;
+    final List<Expression> queryExpressions = new ArrayList<Expression>(3);
+    Expression queryExpression;
 }
 {
-    expression = And() { expressions.add(expression); }
+    queryExpression = And() { queryExpressions.add(queryExpression); }
     (
-       <OR> expression = And() { expressions.add(expression); }
+       <OR> queryExpression = And() { queryExpressions.add(queryExpression); }
     )*
     {
-        return expressions.size() != 1 ? factory.createLogicalExpression(LogicalOperator.OR, expressions) : expressions.get(0);
+        return queryExpressions.size() != 1 ? factory.createLogicalExpression(LogicalOperator.OR, queryExpressions) : queryExpressions.get(0);
     }
 }
 
 Expression And():
 {
-    final List<Expression> expressions = new ArrayList<Expression>(3);
-    Expression expression;
+    final List<Expression> queryExpressions = new ArrayList<Expression>(3);
+    Expression queryExpression;
 }
 {
-    expression = Constraint() { expressions.add(expression); }
+    queryExpression = Constraint() { queryExpressions.add(queryExpression); }
     (
-       <AND> expression = Constraint() { expressions.add(expression); }
+       <AND> queryExpression = Constraint() { queryExpressions.add(queryExpression); }
     )*
     {
-        return expressions.size() != 1 ? factory.createLogicalExpression(LogicalOperator.AND, expressions) : expressions.get(0);
+        return queryExpressions.size() != 1 ? factory.createLogicalExpression(LogicalOperator.AND, queryExpressions) : queryExpressions.get(0);
     }
 }
 
 Expression Constraint():
 {
-    final Expression expression;
+    final Expression queryExpression;
 }
 {
-    ( expression = Group() | expression = Comparison() )
+    ( queryExpression = Group() | queryExpression = Comparison() )
     {
-        return expression;
+        return queryExpression;
     }
 }
 
 Expression Group():
 {
-    final Expression expression;
+    final Expression queryExpression;
 }
 {
-    <LPARA> expression = Or() <RPARA>
+    <LPARA> queryExpression = Or() <RPARA>
     {
-        return factory.createGroupExpression(expression);
+        return factory.createGroupExpression(queryExpression);
     }
 }
 

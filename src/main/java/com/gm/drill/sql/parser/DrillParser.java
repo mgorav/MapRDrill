@@ -13,14 +13,14 @@ public final class DrillParser {
 
     private static final Charset ENCODING = Charset.forName("UTF-8");
 
-    private ExpressionFactory expressionFactory;
+    private QueryExpressionFactory queryExpressionFactory;
 
     /**
      * Creates a new instance of {@code DrillParser} with the default set of operators.
      */
     public DrillParser() {
 
-        this.expressionFactory = new ExpressionFactory(Operator.values());
+        this.queryExpressionFactory = new QueryExpressionFactory(Operator.values());
     }
 
     /**
@@ -34,13 +34,13 @@ public final class DrillParser {
      * @throws IllegalArgumentException
      *             If the {@code query} is <tt>null</tt>.
      */
-    public Expression parse(String query) throws DrilParserException {
+    public QueryExpression parse(String query) throws DrilParserException {
 
         if (query == null) {
             throw new IllegalArgumentException("query must not be null");
         }
         InputStream is = new ByteArrayInputStream(query.getBytes(ENCODING));
-        BaseParser parser = new BaseParser(is, ENCODING.name(), expressionFactory);
+        BaseParser parser = new BaseParser(is, ENCODING.name(), queryExpressionFactory);
         parser.enable_tracing();
         try {
             return parser.Input();

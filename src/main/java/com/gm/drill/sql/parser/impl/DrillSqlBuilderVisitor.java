@@ -10,7 +10,7 @@ public class DrillSqlBuilderVisitor implements DrillVisitor<QueryContext, QueryC
     private QueryValueInterpreter vi = new QueryValueInterpreter();
 
     @Override
-    public QueryContext visit(AndExpression expression, QueryContext sql) {
+    public QueryContext visit(AndQueryExpression expression, QueryContext sql) {
         sql.appendStartBrackets(expression.getChildren().size()-1);
         for (int i = 0; i < expression.getChildren().size() - 1; ++i) {
             expression.getChildren().get(i).accept(this, sql);
@@ -25,7 +25,7 @@ public class DrillSqlBuilderVisitor implements DrillVisitor<QueryContext, QueryC
     }
 
     @Override
-    public QueryContext visit(OrExpression expression, QueryContext sql) {
+    public QueryContext visit(OrQueryExpression expression, QueryContext sql) {
         sql.appendStartBrackets(expression.getChildren().size()-1);
         for (int i = 0; i < expression.getChildren().size() - 1; ++i) {
             expression.getChildren().get(i).accept(this, sql);
@@ -40,7 +40,7 @@ public class DrillSqlBuilderVisitor implements DrillVisitor<QueryContext, QueryC
     }
 
     @Override
-    public QueryContext visit(ComparisonExpression expression, QueryContext sql) {
+    public QueryContext visit(ComparisonQueryExpression expression, QueryContext sql) {
 //        for (int i = 0; i < expression.getAttributes().size() - 1; ++i) {
 //            sql = sql.append(" " + expression.getAttributes().get(i) + " ");
 //        }
@@ -52,7 +52,7 @@ public class DrillSqlBuilderVisitor implements DrillVisitor<QueryContext, QueryC
     }
 
     @Override
-    public QueryContext visit(GroupExpression expression, QueryContext sql) {
+    public QueryContext visit(GroupQueryExpression expression, QueryContext sql) {
         return null;
     }
 

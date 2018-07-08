@@ -15,11 +15,11 @@ package com.gm.drill.sql.parser;
  */
 public interface DrillVisitor<R, A> {
 
-    R visit(AndExpression expression, A param);
+    R visit(AndQueryExpression expression, A param);
 
-    R visit(OrExpression expression, A param);
+    R visit(OrQueryExpression expression, A param);
 
-    R visit(ComparisonExpression expression, A param);
+    R visit(ComparisonQueryExpression expression, A param);
 
-    R visit(GroupExpression expression, A param);
+    R visit(GroupQueryExpression expression, A param);
 }

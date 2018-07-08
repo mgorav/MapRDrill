@@ -11,7 +11,7 @@ public class QueryStringProcessor {
         // q=[a.eq(2).and(b.eq(3)].or.[d.eq('f')] for groups
         // q=a#b#c.eq(3) for joins
         /*
-         * Expression = FieldName.operator(value)
+         * QueryExpression = FieldName.operator(value)
          * operator = {'eq', 'in', 'lt', 'gt', 'lte', 'gte', 'ne', 'bet'}
          * complex expression = [expression.and|or.expression]
          */
