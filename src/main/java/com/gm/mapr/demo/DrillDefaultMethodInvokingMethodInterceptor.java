@@ -2,6 +2,7 @@ package com.gm.mapr.demo;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.gm.util.JsonUtil;
 import org.aopalliance.intercept.MethodInvocation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.projection.DefaultMethodInvokingMethodInterceptor;
@@ -20,6 +21,8 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.gm.util.JsonUtil.getJsonNode;
 
 public class DrillDefaultMethodInvokingMethodInterceptor extends DefaultMethodInvokingMethodInterceptor {
     RepositoryMetadata metadata = new DefaultRepositoryMetadata(DrillRepository.class);
@@ -61,30 +64,7 @@ public class DrillDefaultMethodInvokingMethodInterceptor extends DefaultMethodIn
 
     }
 
-    static void getJsonNode(List<JsonNode> yelpObjects, ResultSet result, ObjectMapper objectMapper) throws SQLException, IOException {
-        while (result.next()) {
 
-            ResultSetMetaData meta = result.getMetaData();
-
-            StringBuilder node = new StringBuilder();
-
-            node.append("{ ");
-            for (int i = 1; i <= meta.getColumnCount(); i++) {
-                String value = result.getString(i);
-
-                value = (value == null ? "\"" + ":" + null : "\"" + " : " + "\"" + value + "\"");
-
-                node.append(" \"" + meta.getColumnName(i) + value);
-
-                if (i < meta.getColumnCount()) {
-                    node.append(",");
-                }
-            }
-            node.append("}");
-            yelpObjects.add(objectMapper.readTree(node.toString()));
-
-        }
-    }
 
 
     private DrillQueryMethod getQueryMethod(Class<?> repositoryInterface, String methodName, Class<?>... parameterTypes)

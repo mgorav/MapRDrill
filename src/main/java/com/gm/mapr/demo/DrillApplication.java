@@ -24,8 +24,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.gm.mapr.demo.DrillDefaultMethodInvokingMethodInterceptor.getJsonNode;
-import static com.gm.mapr.demo.DrillRepository.TABLE_NAME;
+import static com.gm.util.JsonUtil.getJsonNode;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
