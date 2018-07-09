@@ -99,13 +99,13 @@ public class DrillApplication {
 
         }
 
-        @RequestMapping(method = GET, value = "/users", produces = {APPLICATION_JSON_VALUE})
-        public List<JsonNode> query(@RequestParam(value = "fn") String fn,@RequestParam(value = "search") String search) throws SQLException, IOException {
+        @RequestMapping(method = GET, value = "/{resourceName}", produces = {APPLICATION_JSON_VALUE})
+        public List<JsonNode> query(@PathVariable String resourceName,@RequestParam(value = "fn") String fn,@RequestParam(value = "search") String search) throws SQLException, IOException {
 
             List<JsonNode> yelpObjects = new ArrayList<>();
-
+            String tableName = "dfs.`" + "/mapr/maprdemo.mapr.io/apps/" + resourceName + "` ";
             DrillQueryStringParser drillQueryStringParser = new DrillQueryStringParser();
-            QueryContext qc = new QueryContext(TABLE_NAME,fn);
+            QueryContext qc = new QueryContext(tableName,fn);
             drillQueryStringParser.parse(search).accept(new DrillSqlBuilderQueryStringVisitor(), qc);
 
             String sql = qc.getQuery().toString();
