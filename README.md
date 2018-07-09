@@ -1,7 +1,8 @@
 # Micro Service With MapR-DB Using Spring Boot + Drill
 
 A Spring Boot service which connect to MapR cluster and demonstrate querying using
- apache Drill.
+apache Drill.  This project extends Spring Data and provide querying ability using Apache Drill.
+It also provides query string DSL (Domain Specific Language) for querying in generic manner. 
  
  ## Overview
  My love affair with Spring Framework which  started almost 18 year back and is never ending... why not? as it allows me to express my logical thoughts in simplest, quick & easiest way... check out my github project that builds a data service API using Spring Boot + MapR + Apache Drill and demonstrates following concepts:
