@@ -103,6 +103,8 @@ public class DrillApplication {
         public List<JsonNode> query(@PathVariable String resourceName,@RequestParam(value = "fn") String fn,@RequestParam(value = "search") String search) throws SQLException, IOException {
 
             List<JsonNode> yelpObjects = new ArrayList<>();
+            // Fully qualified global name space following by the resourceName.
+            // NOTE: resourceName = tableName
             String tableName = "dfs.`" + "/mapr/maprdemo.mapr.io/apps/" + resourceName + "` ";
             DrillQueryStringParser drillQueryStringParser = new DrillQueryStringParser();
             QueryContext qc = new QueryContext(tableName,fn);
