@@ -22,9 +22,9 @@ import java.util.List;
 
 final class BaseParser {
 
-    private ExpressionFactory factory;
+    private QueryExpressionFactory factory;
 
-    public BaseParser(InputStream stream, String encoding, ExpressionFactory factory) {
+    public BaseParser(InputStream stream, String encoding, QueryExpressionFactory factory) {
         this(stream, encoding);
         this.factory = factory;
     }
@@ -77,9 +77,9 @@ TOKEN : {
   | < OR         : ".or."  >
 }
 
-Expression Input():
+QueryExpression Input():
 {
-    final Expression queryExpression;
+    final  QueryExpression queryExpression;
 }
 {
     queryExpression = Or() <EOF>
@@ -88,10 +88,10 @@ Expression Input():
     }
 }
 
-Expression Or():
+QueryExpression Or():
 {
-    final List<Expression> queryExpressions = new ArrayList<Expression>(3);
-    Expression queryExpression;
+    final List<QueryExpression> queryExpressions = new ArrayList<QueryExpression>(3);
+    QueryExpression queryExpression;
 }
 {
     queryExpression = And() { queryExpressions.add(queryExpression); }
@@ -103,10 +103,10 @@ Expression Or():
     }
 }
 
-Expression And():
+QueryExpression And():
 {
-    final List<Expression> queryExpressions = new ArrayList<Expression>(3);
-    Expression queryExpression;
+    final List<QueryExpression> queryExpressions = new ArrayList<QueryExpression>(3);
+    QueryExpression queryExpression;
 }
 {
     queryExpression = Constraint() { queryExpressions.add(queryExpression); }
@@ -118,9 +118,9 @@ Expression And():
     }
 }
 
-Expression Constraint():
+QueryExpression Constraint():
 {
-    final Expression queryExpression;
+    final QueryExpression queryExpression;
 }
 {
     ( queryExpression = Group() | queryExpression = Comparison() )
@@ -129,9 +129,9 @@ Expression Constraint():
     }
 }
 
-Expression Group():
+QueryExpression Group():
 {
-    final Expression queryExpression;
+    final QueryExpression queryExpression;
 }
 {
     <LPARA> queryExpression = Or() <RPARA>
@@ -140,7 +140,7 @@ Expression Group():
     }
 }
 
-ComparisonExpression Comparison():
+ComparisonQueryExpression Comparison():
 {
     final String attrAndOper;
     final List<String> args;
