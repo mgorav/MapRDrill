@@ -1,9 +1,5 @@
 package com.gm.util;
 
-import com.google.common.base.Objects.ToStringHelper;
-
-import static com.google.common.base.Objects.toStringHelper;
-
 /**
  * A tuple 2 representing two typed values.
  *
@@ -30,18 +26,10 @@ public class Return2<Type1, Type2> {
 
     @Override
     public String toString() {
-
-        ToStringHelper toStringHelper = toStringHelper(this);
-
-        addAttributes(toStringHelper);
-
-        return toStringHelper.toString();
-    }
-
-    protected void addAttributes(ToStringHelper toStringHelper) {
-
-        toStringHelper
-                .add("1", _1)
-                .add("2", _2);
+        final StringBuilder sb = new StringBuilder("Return2{");
+        sb.append("_1=").append(_1);
+        sb.append(", _2=").append(_2);
+        sb.append('}');
+        return sb.toString();
     }
 }
